@@ -1,4 +1,4 @@
-const Note = require("../models/Note");
+const { Note, Category } = require("../models");
 
 const noteService = {
   getAll: async () => {
@@ -6,9 +6,16 @@ const noteService = {
   },
 
   create: async (data) => {
-    const { title, content } = data;
+    const { title, content, categoryId } = data;
+
     if (!title || !content) throw new Error("Título y contenido requeridos");
-    return await Note.create({ title, content });
+
+    if (categoryId) {
+      const exists = await Category.findByPk(categoryId);
+      if (!exists) throw new Error("La categoría seleccionada no existe.");
+    }
+
+    return await Note.create({ title, content, categoryId });
   },
 
   update: async (id, data) => {

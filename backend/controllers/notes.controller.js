@@ -7,8 +7,12 @@ const noteController = {
   },
 
   create: async (req, res) => {
-    const newNote = await noteService.create(req.body);
-    res.status(201).json(newNote);
+    try {
+      const newNote = await noteService.create(req.body);
+      res.status(201).json(newNote);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
   },
 
   update: async (req, res) => {
@@ -29,5 +33,7 @@ const noteController = {
     res.json(archived);
   },
 };
+
+
 
 module.exports = noteController;
