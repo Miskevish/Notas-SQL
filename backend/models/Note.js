@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("./index");
+const sequelize = require("./db");
 
 const Note = sequelize.define(
   "Note",
@@ -10,7 +10,11 @@ const Note = sequelize.define(
     },
     content: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
+    },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
     archived: {
       type: DataTypes.BOOLEAN,
