@@ -1,16 +1,13 @@
-const { Sequelize } = require("sequelize");
-const config = require("../config/config").development;
+const sequelize = require("./db");
+const Note = require("./Note");
+const Category = require("./Category");
 
-const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  {
-    host: config.host,
-    port: config.port,
-    dialect: config.dialect,
-    logging: false,
-  }
-);
+Category.hasMany(Note, { foreignKey: "categoryId" });
+Note.belongsTo(Category, { foreignKey: "categoryId" });
 
-module.exports = sequelize;
+module.exports = {
+  sequelize,
+  Note,
+  Category,
+};
+
