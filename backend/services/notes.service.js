@@ -1,11 +1,14 @@
 const { Note, Category } = require("../models");
 
 const noteService = {
-  getAll: async () => {
-    return await Note.findAll({ order: [["createdAt", "DESC"]] });
+  getAll: async (userId) => {
+    return await Note.findAll({
+      where: { userId },
+      order: [["createdAt", "DESC"]],
+    });
   },
 
-  create: async (data) => {
+  create: async (data, userId) => {
     const { title, content, categoryId } = data;
 
     if (!title || !content) throw new Error("Título y contenido requeridos");
@@ -15,26 +18,26 @@ const noteService = {
       if (!exists) throw new Error("La categoría seleccionada no existe.");
     }
 
-    return await Note.create({ title, content, categoryId });
+    return await Note.create({ title, content, categoryId, userId });
   },
 
-  update: async (id, data) => {
-    const note = await Note.findByPk(id);
-    if (!note) throw new Error("Nota no encontrada");
+  update: async (id, data, userId) => {
+    const note = await Note.findOne({ where: { id, userId } });
+    if (!note) throw new Error("Nota no encontrada o no autorizada");
 
     return await note.update(data);
   },
 
-  delete: async (id) => {
-    const note = await Note.findByPk(id);
-    if (!note) throw new Error("Nota no encontrada");
+  delete: async (id, userId) => {
+    const note = await Note.findOne({ where: { id, userId } });
+    if (!note) throw new Error("Nota no encontrada o no autorizada");
 
     await note.destroy();
   },
 
-  toggleArchive: async (id) => {
-    const note = await Note.findByPk(id);
-    if (!note) throw new Error("Nota no encontrada");
+  toggleArchive: async (id, userId) => {
+    const note = await Note.findOne({ where: { id, userId } });
+    if (!note) throw new Error("Nota no encontrada o no autorizada");
 
     note.archived = !note.archived;
     await note.save();
