@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("./db");
 const User = require("./User");
+const Category = require("./Category"); 
 
 const Note = sequelize.define(
   "Note",
@@ -13,13 +14,18 @@ const Note = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    isArchived: {
+    archived: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    category: {
-      type: DataTypes.STRING,
-      allowNull: true, 
+    priority: {
+      type: DataTypes.ENUM("High", "Medium", "Low"),
+      allowNull: false,
+      defaultValue: "Medium",
+    },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
   },
   {
@@ -33,8 +39,9 @@ User.hasMany(Note, {
   onDelete: "CASCADE",
 });
 
-Note.belongsTo(User, {
-  foreignKey: "userId",
+Note.belongsTo(Category, {
+  as: "category", 
+  foreignKey: "categoryId",
 });
 
 module.exports = Note;
