@@ -1,0 +1,137 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.home {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background-color: #1C1F2B;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.particles-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.home-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.home-logo {
+  height: 250px;
+  margin-bottom: 1rem;
+}
+
+.home-title {
+  font-size: 5rem;
+  color: #2BBEAD;
+  font-weight: 600;
+}
+
+.home-slogan {
+  font-size: 2rem;
+  color: #F5F5F5;
+  font-family: 'Playfair Display', serif !important; 
+}
+
+.home-btn {
+  background-color: #257A75 !important;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  margin: 0 10px;
+  color: #F5F5F5 !important;  
+  font-family: 'Lato', sans-serif !important;  
+} 
+
+.home-btn:hover {
+  background-color: #2BBEAD !important;
+  color: #1C1F2B !important;
+}
+
+@media (max-width: 992px) {
+  .home-title {
+    font-size: 3.5rem;
+  }
+
+  .home-slogan {
+    font-size: 1.5rem;
+  }
+
+  .home-logo {
+    height: 180px;
+  }
+
+  .home-btn {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.95rem;
+    margin: 0 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-title {
+    font-size: 3rem;
+  }
+
+  .home-slogan {
+    font-size: 1.3rem;
+  }
+
+  .home-logo {
+    height: 140px;
+    margin-bottom: 0.8rem;
+  }
+
+  .home-btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.9rem;
+    margin: 0 6px;
+  }
+
+  .home-content {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-title {
+    font-size: 2.2rem;
+  }
+
+  .home-slogan {
+    font-size: 1.1rem;
+  }
+
+  .home-logo {
+    height: 100px;
+    margin-bottom: 0.6rem;
+  }
+
+  .home-btn {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.85rem;
+    margin: 0 5px;
+  }
+
+  .home-content {
+    padding: 0 15px;
+  }
+}

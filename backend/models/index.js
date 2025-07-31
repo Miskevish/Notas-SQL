@@ -9,6 +9,9 @@ User.hasMany(Note, { foreignKey: "userId" });
 Category.hasMany(Note, { foreignKey: "categoryId" });
 Note.belongsTo(Category, { foreignKey: "categoryId" });
 
+Category.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(Category, { foreignKey: "userId" });
+
 module.exports = {
   sequelize,
   Note,
