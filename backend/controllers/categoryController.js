@@ -2,7 +2,10 @@ const { Category, Note } = require("../models");
 
 const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.findAll();
+    const userId = req.user.id; 
+    const categories = await Category.findAll({
+      where: { userId },
+    });
     res.json(categories);
   } catch (err) {
     res
@@ -14,7 +17,23 @@ const getAllCategories = async (req, res) => {
 const createCategory = async (req, res) => {
   try {
     const { name } = req.body;
-    const newCategory = await Category.create({ name });
+    const userId = req.user.id; 
+
+    if (!name || !userId) {
+      return res.status(400).json({ message: "Nombre o userId faltante" });
+    }
+
+    const existing = await Category.findOne({
+      where: { name, userId },
+    });
+
+    if (existing) {
+      return res
+        .status(400)
+        .json({ message: "La categoría ya existe para este usuario" });
+    }
+
+    const newCategory = await Category.create({ name, userId });
     res.status(201).json(newCategory);
   } catch (err) {
     res.status(500).json({ message: "Error al crear categoría", error: err });
@@ -24,14 +43,18 @@ const createCategory = async (req, res) => {
 const getNotesByCategory = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.user.id;
 
-    const category = await Category.findByPk(id);
+    const category = await Category.findOne({
+      where: { id, userId },
+    });
+
     if (!category) {
       return res.status(404).json({ error: "Categoría no encontrada" });
     }
 
     const notes = await Note.findAll({
-      where: { categoryId: id },
+      where: { categoryId: id, userId },
     });
 
     res.json(notes);
@@ -44,8 +67,12 @@ const getNotesByCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.user.id;
 
-    const category = await Category.findByPk(id);
+    const category = await Category.findOne({
+      where: { id, userId },
+    });
+
     if (!category) {
       return res.status(404).json({ message: "Categoría no encontrada" });
     }
@@ -58,8 +85,6 @@ const deleteCategory = async (req, res) => {
       .json({ message: "Error al eliminar categoría", error: err });
   }
 };
-
-
 
 module.exports = {
   getAllCategories,
